@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
 from django.utils import timezone
-from .models import StreamSession
+from .models import StreamSessions as StreamSession
 from django.db import models
 # Create your views here.
 @api_view(['GET'])
