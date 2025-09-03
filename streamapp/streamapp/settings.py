@@ -88,7 +88,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "streamdb",
         "USER": "streamuser",
-        "PASSWORD": "StrongPassword123!",
+        "PASSWORD": "Strongpassword123!",
         "HOST": "streamdb.cp2y00amuz86.us-east-2.rds.amazonaws.com",
         "PORT": "5432",
     }
