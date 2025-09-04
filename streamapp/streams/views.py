@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,6 +5,8 @@ from django.conf import settings
 from django.utils import timezone
 from .models import StreamSessions as StreamSession
 from django.db import models
+from django.contrib.auth.models import User
+
 # Create your views here.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -42,3 +43,12 @@ def analytics(request):
         total=models.Sum("duration")
     )["total"] or 0
     return Response({"username": request.user.username, "watch_seconds": total})
+
+@api_view(["POST"])
+def register(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+    if User.objects.filter(username=username).exists():
+        return Response({"error": "Username taken"}, status=400)
+    user = User.objects.create_user(username=username, password=password)
+    return Response({"message": "User created"}, status=201)
