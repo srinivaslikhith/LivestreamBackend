@@ -16,14 +16,16 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get update && sudo apt-get install -y openssh-client
 
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.8.1
-        with:
-          ssh-private-key: ${{ secrets.LS_EC2_SSH_KEY }}
+      - name: Setup SSH key manually
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LS_EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 52.15.114.254 >> ~/.ssh/known_hosts
 
       - name: Deploy Django on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@52.15.114.254 "
+          ssh ec2-user@52.15.114.254 "
             cd /home/ec2-user/LivestreamBackend &&
             git pull origin main &&
             source /home/ec2-user/your-venv/bin/activate &&
