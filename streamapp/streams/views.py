@@ -6,6 +6,7 @@ from django.utils import timezone
 from .models import StreamSessions as StreamSession
 from django.db import models
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
 
 # Create your views here.
 @api_view(['GET'])
@@ -45,6 +46,7 @@ def analytics(request):
     return Response({"username": request.user.username, "watch_seconds": total})
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def register(request):
     username = request.data.get("username")
     password = request.data.get("password")
